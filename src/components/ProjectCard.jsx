@@ -7,9 +7,11 @@ import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import LaunchIcon from '@mui/icons-material/Launch'
 import { getTechIcon } from '../utils/techIcons'
+import { getMobileThumbnailUrl } from '../utils/thumbnail'
 
 const ProjectCard = ({ project }) => {
   const { title, description, tech_stack: techStack = [], detail_url: detailUrl, thumbnail_url: thumbnailUrl } = project
+  const mobileThumbnailUrl = getMobileThumbnailUrl(thumbnailUrl)
 
   return (
     <Card
@@ -34,30 +36,71 @@ const ProjectCard = ({ project }) => {
         rel="noopener noreferrer"
         aria-label={`${title} 사이트 새 탭에서 열기`}
         sx={{
-          display: 'block',
-          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           width: '100%',
-          pt: '56.25%',
-          overflow: 'hidden',
+          height: 300,
+          py: 3,
           backgroundColor: 'var(--color-bg-primary)',
-          '&:hover img': { transform: 'scale(1.08)' },
+          backgroundImage: 'radial-gradient(circle at 50% 35%, rgba(200,160,86,0.10), transparent 65%)',
+          '&:hover .phone-mockup': { transform: 'translateY(-4px) scale(1.03)' },
         }}
       >
+        {/* 모바일 목업 프레임 */}
         <Box
-          component="img"
-          src={thumbnailUrl}
-          alt={`${title} 스크린샷`}
-          loading="lazy"
+          className="phone-mockup"
           sx={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
+            position: 'relative',
+            width: 148,
             height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'top',
-            transition: 'transform 0.4s ease',
+            flexShrink: 0,
+            backgroundColor: '#111118',
+            borderRadius: '22px',
+            border: '3px solid var(--color-border-dark)',
+            boxShadow: '0 14px 28px rgba(0,0,0,0.55)',
+            overflow: 'hidden',
+            transition: 'transform 0.3s ease',
           }}
-        />
+        >
+          {/* 노치 */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 6,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 44,
+              height: 12,
+              borderRadius: '8px',
+              backgroundColor: '#0A0A14',
+              zIndex: 2,
+            }}
+          />
+          {/* 화면 */}
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: '4px',
+              borderRadius: '17px',
+              overflow: 'hidden',
+              backgroundColor: 'var(--color-bg-card)',
+            }}
+          >
+            <Box
+              component="img"
+              src={mobileThumbnailUrl}
+              alt={`${title} 모바일 화면`}
+              loading="lazy"
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top',
+              }}
+            />
+          </Box>
+        </Box>
       </Box>
 
       <CardContent sx={{ flexGrow: 1 }}>
