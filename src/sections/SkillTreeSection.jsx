@@ -3,17 +3,18 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import LinearProgress from '@mui/material/LinearProgress'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
-import { initialSkills, getMainSkills, skillCategories } from '../data/skillsData'
+import { usePortfolio } from '../context/PortfolioContext'
+import { skillCategories } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
-
-const mainSkills = getMainSkills(initialSkills, 3)
 
 const SkillTreeSection = () => {
   const navigate = useNavigate()
+  const { homeData } = usePortfolio()
 
   return (
     <Box sx={{ py: 8 }}>
@@ -34,37 +35,25 @@ const SkillTreeSection = () => {
               제가 주로 다루는 기술이에요. 전체 스킬은 About Me 페이지에서 더 볼 수 있어요.
             </Typography>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-              {mainSkills.map((skill) => {
+            <Stack direction="row" spacing={1.5} sx={{ flexWrap: 'wrap', gap: 1.5 }}>
+              {homeData.topSkills.map((skill) => {
                 const Icon = getSkillIcon(skill.name)
                 const color = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
                 return (
-                  <Box key={skill.id}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Icon sx={{ fontSize: 18, color }} />
-                        <Typography variant="body2" sx={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
-                          {skill.name}
-                        </Typography>
-                      </Box>
-                      <Typography variant="body2" sx={{ color }}>
-                        {skill.level}%
-                      </Typography>
-                    </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={skill.level}
-                      sx={{
-                        height: 10,
-                        borderRadius: 5,
-                        backgroundColor: 'var(--color-border-dark)',
-                        '& .MuiLinearProgress-bar': { backgroundColor: color },
-                      }}
-                    />
-                  </Box>
+                  <Chip
+                    key={skill.id}
+                    icon={<Icon sx={{ fontSize: '18px !important', color: `${color} !important` }} />}
+                    label={skill.name}
+                    sx={{
+                      backgroundColor: `${color}15`,
+                      color: 'var(--color-text-primary)',
+                      border: `1px solid ${color}55`,
+                      px: 1,
+                    }}
+                  />
                 )
               })}
-            </Box>
+            </Stack>
           </CardContent>
         </Card>
 
@@ -80,7 +69,7 @@ const SkillTreeSection = () => {
               '&:hover': { borderColor: 'var(--color-button-hover)', backgroundColor: 'rgba(45,212,191,0.08)' },
             }}
           >
-            더 보기
+            전체 스킬 보기
           </Button>
         </Box>
       </Container>

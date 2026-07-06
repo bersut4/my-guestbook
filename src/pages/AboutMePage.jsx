@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -9,13 +9,16 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Chip from '@mui/material/Chip'
 import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 import SchoolIcon from '@mui/icons-material/School'
 import TranslateIcon from '@mui/icons-material/Translate'
 import WorkOutlineIcon from '@mui/icons-material/WorkOutlineOutlined'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import PublicIcon from '@mui/icons-material/Public'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import { initialAboutMeData } from '../data/aboutMeData'
+import EditIcon from '@mui/icons-material/Edit'
+import { usePortfolio } from '../context/PortfolioContext'
 import SkillsGrid from '../components/SkillsGrid'
 
 const InfoRow = ({ icon, label, value }) => (
@@ -33,8 +36,10 @@ const InfoRow = ({ icon, label, value }) => (
 )
 
 const AboutMePage = () => {
-  const [aboutMeData, setAboutMeData] = useState(initialAboutMeData)
+  const { aboutMeData, updateSection, updatePhoto } = usePortfolio()
   const [activeTab, setActiveTab] = useState(0)
+  const [editingId, setEditingId] = useState(null)
+  const [draftContent, setDraftContent] = useState('')
   const fileInputRef = useRef(null)
   const photoUrlRef = useRef('')
 
@@ -48,9 +53,22 @@ const AboutMePage = () => {
   ]
   const activeItem = tabItems[activeTab]
 
-  useEffect(() => () => {
-    if (photoUrlRef.current) URL.revokeObjectURL(photoUrlRef.current)
-  }, [])
+  const handleTabChange = (_, next) => {
+    setActiveTab(next)
+    setEditingId(null)
+  }
+
+  const startEditing = () => {
+    setDraftContent(activeItem.content)
+    setEditingId(activeItem.id)
+  }
+
+  const cancelEditing = () => setEditingId(null)
+
+  const saveEditing = () => {
+    updateSection(activeItem.id, draftContent)
+    setEditingId(null)
+  }
 
   const handlePhotoChange = (event) => {
     const file = event.target.files?.[0]
@@ -59,11 +77,7 @@ const AboutMePage = () => {
     if (photoUrlRef.current) URL.revokeObjectURL(photoUrlRef.current)
     const nextUrl = URL.createObjectURL(file)
     photoUrlRef.current = nextUrl
-
-    setAboutMeData((prev) => ({
-      ...prev,
-      basicInfo: { ...prev.basicInfo, photo: nextUrl },
-    }))
+    updatePhoto(nextUrl)
   }
 
   return (
@@ -189,7 +203,7 @@ const AboutMePage = () => {
         {/* 콘텐츠 섹션 */}
         <Tabs
           value={activeTab}
-          onChange={(_, next) => setActiveTab(next)}
+          onChange={handleTabChange}
           variant="scrollable"
           scrollButtons="auto"
           sx={{
@@ -208,9 +222,16 @@ const AboutMePage = () => {
         <Card>
           <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
             <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between', mb: activeItem.isSkills ? 3 : 2 }}>
-              <Typography variant="h5" sx={{ color: 'var(--color-text-primary)' }}>
-                {activeItem.title}
-              </Typography>
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                <Typography variant="h5" sx={{ color: 'var(--color-text-primary)' }}>
+                  {activeItem.title}
+                </Typography>
+                {!activeItem.isSkills && editingId !== activeItem.id && (
+                  <IconButton size="small" onClick={startEditing} sx={{ color: 'var(--color-text-secondary)' }}>
+                    <EditIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                )}
+              </Stack>
               {activeItem.showInHome && (
                 <Chip
                   label="홈 화면에도 표시"
@@ -226,6 +247,31 @@ const AboutMePage = () => {
 
             {activeItem.isSkills ? (
               <SkillsGrid />
+            ) : editingId === activeItem.id ? (
+              <Stack spacing={2}>
+                <TextField
+                  value={draftContent}
+                  onChange={(event) => setDraftContent(event.target.value)}
+                  multiline
+                  minRows={4}
+                  fullWidth
+                  sx={{
+                    '& .MuiOutlinedInput-root': { color: 'var(--color-text-primary)' },
+                  }}
+                />
+                <Stack direction="row" spacing={1.5} sx={{ justifyContent: 'flex-end' }}>
+                  <Button onClick={cancelEditing} sx={{ color: 'var(--color-text-secondary)' }}>
+                    취소
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={saveEditing}
+                    sx={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-primary-dark)' }}
+                  >
+                    저장
+                  </Button>
+                </Stack>
+              </Stack>
             ) : (
               <>
                 <Typography

@@ -5,6 +5,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import LinearProgress from '@mui/material/LinearProgress'
+import Slider from '@mui/material/Slider'
 import Chip from '@mui/material/Chip'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
@@ -12,15 +13,21 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import Stack from '@mui/material/Stack'
+import IconButton from '@mui/material/IconButton'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import AddIcon from '@mui/icons-material/Add'
 import StarIcon from '@mui/icons-material/Star'
-import { initialSkills, addableSkills, skillCategories, sortByLevelDesc } from '../data/skillsData'
+import EditIcon from '@mui/icons-material/Edit'
+import CheckIcon from '@mui/icons-material/Check'
+import { addableSkills, skillCategories, sortByLevelDesc } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
+import { usePortfolio } from '../context/PortfolioContext'
 
-const SkillCard = ({ skill }) => {
+const SkillCard = ({ skill, onUpdateLevel }) => {
   const [displayLevel, setDisplayLevel] = useState(0)
+  const [isEditing, setIsEditing] = useState(false)
+  const [draftLevel, setDraftLevel] = useState(skill.level)
   const Icon = getSkillIcon(skill.name)
   const categoryColor = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
 
@@ -29,8 +36,18 @@ const SkillCard = ({ skill }) => {
     return () => clearTimeout(timer)
   }, [skill.level])
 
+  const startEdit = () => {
+    setDraftLevel(skill.level)
+    setIsEditing(true)
+  }
+
+  const confirmEdit = () => {
+    onUpdateLevel(skill.id, draftLevel)
+    setIsEditing(false)
+  }
+
   return (
-    <Tooltip title={skill.description} arrow placement="top">
+    <Tooltip title={skill.description} arrow placement="top" disableHoverListener={isEditing}>
       <Card
         sx={{
           height: '100%',
@@ -49,7 +66,8 @@ const SkillCard = ({ skill }) => {
             </Typography>
             {skill.isMain && <StarIcon sx={{ fontSize: 16, color: 'var(--color-secondary)' }} />}
           </Stack>
-          <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 0.5 }}>
+
+          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
             <Chip
               label={skill.category}
               size="small"
@@ -61,23 +79,49 @@ const SkillCard = ({ skill }) => {
                 fontSize: '0.7rem',
               }}
             />
-            <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700 }}>
-              {skill.level}%
-            </Typography>
+            {isEditing ? (
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+                <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700, minWidth: 32 }}>
+                  {draftLevel}%
+                </Typography>
+                <IconButton size="small" onClick={confirmEdit} sx={{ color: categoryColor }}>
+                  <CheckIcon sx={{ fontSize: 16 }} />
+                </IconButton>
+              </Stack>
+            ) : (
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+                <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700 }}>
+                  {skill.level}%
+                </Typography>
+                <IconButton size="small" onClick={startEdit} sx={{ color: 'var(--color-text-secondary)' }}>
+                  <EditIcon sx={{ fontSize: 14 }} />
+                </IconButton>
+              </Stack>
+            )}
           </Stack>
-          <LinearProgress
-            variant="determinate"
-            value={displayLevel}
-            sx={{
-              height: 8,
-              borderRadius: 4,
-              backgroundColor: 'var(--color-border-dark)',
-              '& .MuiLinearProgress-bar': {
-                backgroundColor: categoryColor,
-                transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
-              },
-            }}
-          />
+
+          {isEditing ? (
+            <Slider
+              value={draftLevel}
+              onChange={(_, value) => setDraftLevel(value)}
+              size="small"
+              sx={{ color: categoryColor }}
+            />
+          ) : (
+            <LinearProgress
+              variant="determinate"
+              value={displayLevel}
+              sx={{
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: 'var(--color-border-dark)',
+                '& .MuiLinearProgress-bar': {
+                  backgroundColor: categoryColor,
+                  transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                },
+              }}
+            />
+          )}
         </CardContent>
       </Card>
     </Tooltip>
@@ -103,7 +147,8 @@ const AddableSkillChip = ({ item, onAdd }) => {
 }
 
 const SkillsGrid = () => {
-  const [skills, setSkills] = useState(initialSkills)
+  const { aboutMeData, addSkill, updateSkillLevel } = usePortfolio()
+  const skills = aboutMeData.skills
   const [viewMode, setViewMode] = useState('category')
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -112,20 +157,6 @@ const SkillsGrid = () => {
   const categoriesInUse = Object.keys(skillCategories).filter((category) =>
     skills.some((skill) => skill.category === category)
   )
-
-  const handleAddSkill = (item) => {
-    setSkills((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        name: item.name,
-        level: 30,
-        category: item.category,
-        description: '새로 추가한 기술이에요.',
-        isMain: false,
-      },
-    ])
-  }
 
   return (
     <Box>
@@ -169,7 +200,7 @@ const SkillsGrid = () => {
         <Grid container spacing={2.5}>
           {sortByLevelDesc(skills).map((skill) => (
             <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <SkillCard skill={skill} />
+              <SkillCard skill={skill} onUpdateLevel={updateSkillLevel} />
             </Grid>
           ))}
         </Grid>
@@ -195,7 +226,7 @@ const SkillsGrid = () => {
                   .filter((skill) => skill.category === category)
                   .map((skill) => (
                     <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                      <SkillCard skill={skill} />
+                      <SkillCard skill={skill} onUpdateLevel={updateSkillLevel} />
                     </Grid>
                   ))}
               </Grid>
@@ -222,7 +253,7 @@ const SkillsGrid = () => {
           ) : (
             <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1, py: 1 }}>
               {availableToAdd.map((item) => (
-                <AddableSkillChip key={item.name} item={item} onAdd={handleAddSkill} />
+                <AddableSkillChip key={item.name} item={item} onAdd={addSkill} />
               ))}
             </Stack>
           )}

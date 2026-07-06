@@ -5,6 +5,7 @@ import AboutSection from '../sections/AboutSection'
 import SkillTreeSection from '../sections/SkillTreeSection'
 import ProjectsSection from '../sections/ProjectsSection'
 import ContactSection from '../sections/ContactSection'
+import GuestbookSection from '../sections/GuestbookSection'
 
 const HomePage = () => (
   <>
@@ -15,6 +16,7 @@ const HomePage = () => (
       <SkillTreeSection />
       <ProjectsSection />
       <ContactSection />
+      <GuestbookSection />
     </Box>
   </>
 )

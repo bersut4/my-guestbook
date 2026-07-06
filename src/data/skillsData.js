@@ -62,6 +62,3 @@ export const addableSkills = [
 ]
 
 export const sortByLevelDesc = (skills) => [...skills].sort((a, b) => b.level - a.level)
-
-export const getMainSkills = (skills, count = 3) =>
-  sortByLevelDesc(skills.filter((skill) => skill.isMain)).slice(0, count)
