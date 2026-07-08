@@ -11,6 +11,7 @@ export const useProjects = (limit) => {
 
     const fetchProjects = async () => {
       setLoading(true)
+      setError(null)
 
       let query = supabase
         .from('projects')
@@ -22,16 +23,21 @@ export const useProjects = (limit) => {
         query = query.limit(limit)
       }
 
-      const { data, error: fetchError } = await query
+      try {
+        const { data, error: fetchError } = await query
+        if (!isMounted) return
 
-      if (!isMounted) return
-
-      if (fetchError) {
-        setError(fetchError.message)
-      } else {
-        setProjects(data ?? [])
+        if (fetchError) {
+          setError(fetchError.message)
+        } else {
+          setProjects(data ?? [])
+        }
+      } catch (err) {
+        if (!isMounted) return
+        setError(err.message)
+      } finally {
+        if (isMounted) setLoading(false)
       }
-      setLoading(false)
     }
 
     fetchProjects()

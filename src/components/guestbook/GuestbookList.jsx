@@ -24,18 +24,23 @@ export default function GuestbookList({ refreshTrigger }) {
       ? '*'
       : 'id, name, message, occupation, referral_source, keyword, emoji, star_rating, created_at'
 
-    const { data, count } = await supabase
-      .from('guestbook_entries')
-      .select(selectFields, { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(from, to)
+    try {
+      const { data, count } = await supabase
+        .from('guestbook_entries')
+        .select(selectFields, { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(from, to)
 
-    if (data) {
-      setEntries((prev) => (append ? [...prev, ...data] : data))
-      setTotal(count ?? 0)
-      setHasMore(to < (count ?? 0) - 1)
+      if (data) {
+        setEntries((prev) => (append ? [...prev, ...data] : data))
+        setTotal(count ?? 0)
+        setHasMore(to < (count ?? 0) - 1)
+      }
+    } catch {
+      // 네트워크 오류 시에도 로딩 상태가 영원히 풀리지 않는 걸 방지
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [isAdmin])
 
   useEffect(() => {
