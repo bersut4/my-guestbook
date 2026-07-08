@@ -1,11 +1,20 @@
+import { Suspense, lazy } from 'react'
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 import OceanBackground from '../components/OceanBackground'
 import HeroSection from '../sections/HeroSection'
 import AboutSection from '../sections/AboutSection'
 import SkillTreeSection from '../sections/SkillTreeSection'
 import ProjectsSection from '../sections/ProjectsSection'
 import ContactSection from '../sections/ContactSection'
-import GuestbookSection from '../sections/GuestbookSection'
+
+const GuestbookSection = lazy(() => import('../sections/GuestbookSection'))
+
+const SectionLoadingFallback = () => (
+  <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+    <CircularProgress sx={{ color: 'var(--color-secondary)' }} />
+  </Box>
+)
 
 const HomePage = () => (
   <>
@@ -16,7 +25,9 @@ const HomePage = () => (
       <SkillTreeSection />
       <ProjectsSection />
       <ContactSection />
-      <GuestbookSection />
+      <Suspense fallback={<SectionLoadingFallback />}>
+        <GuestbookSection />
+      </Suspense>
     </Box>
   </>
 )
