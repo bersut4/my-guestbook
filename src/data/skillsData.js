@@ -32,14 +32,6 @@ export const initialSkills = [
     isMain: true,
   },
   {
-    id: 4,
-    name: 'HTML/CSS',
-    level: 55,
-    category: 'Frontend',
-    description: '퍼블리싱 기초를 익혀 개발자와 원활히 협업할 수 있어요.',
-    isMain: false,
-  },
-  {
     id: 5,
     name: 'AI 바이브 코딩',
     level: 70,
