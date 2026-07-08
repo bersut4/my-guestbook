@@ -14,6 +14,8 @@ const SECTIONS = [
   { id: 'guestbook-section', label: '방명록' },
 ]
 
+const LAST_SECTION_ID = SECTIONS[SECTIONS.length - 1].id
+
 const scrollToId = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
@@ -23,6 +25,7 @@ const SectionDotNav = () => {
   const isMobile = useMediaQuery(MOBILE_QUERY)
   const [activeId, setActiveId] = useState(SECTIONS[0].id)
   const observerRef = useRef(null)
+  const rafRef = useRef(null)
   const isHome = location.pathname === '/'
 
   useEffect(() => {
@@ -31,6 +34,23 @@ const SectionDotNav = () => {
     const elements = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean)
     if (elements.length === 0) return undefined
 
+    // A short last section can end up entirely outside the shrunken
+    // rootMargin band even when the page is scrolled all the way down,
+    // so it never reports as intersecting. Force it active once we hit
+    // the bottom of the page as a fallback for the IntersectionObserver.
+    const checkAtBottom = () => {
+      rafRef.current = null
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight
+      if (scrollable > 0 && window.scrollY >= scrollable - 2) {
+        setActiveId(LAST_SECTION_ID)
+      }
+    }
+
+    const onScroll = () => {
+      if (rafRef.current) return
+      rafRef.current = requestAnimationFrame(checkAtBottom)
+    }
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         const mostVisible = entries
@@ -38,11 +58,18 @@ const SectionDotNav = () => {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
         if (mostVisible) setActiveId(mostVisible.target.id)
       },
-      { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { rootMargin: '-40% 0px -40% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
     )
 
     elements.forEach((el) => observerRef.current.observe(el))
-    return () => observerRef.current?.disconnect()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    checkAtBottom()
+
+    return () => {
+      observerRef.current?.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
   }, [isHome])
 
   if (!isHome || isMobile) return null
