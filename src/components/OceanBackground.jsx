@@ -155,7 +155,7 @@ const OceanBackground = () => {
                 transformOrigin: 'top center',
                 '--ray-rotate': `${ray.rotate}deg`,
                 transform: `rotate(${ray.rotate}deg)`,
-                animation: `ocean-godray-shimmer ${ray.duration}s ease-in-out ${ray.delay}s infinite`,
+                animation: `ocean-godray-shimmer ${ray.duration}s ease-in-out ${ray.delay}s infinite backwards`,
               }}
             />
           ))}
@@ -174,7 +174,7 @@ const OceanBackground = () => {
             height: bubble.size,
             borderRadius: '50%',
             background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.05) 70%)',
-            animation: `ocean-bubble-rise ${bubble.duration}s ease-in ${bubble.delay}s infinite`,
+            animation: `ocean-bubble-rise ${bubble.duration}s ease-in ${bubble.delay}s infinite backwards`,
           }}
         />
       ))}
@@ -187,7 +187,7 @@ const OceanBackground = () => {
             position: 'absolute',
             top: fish.top,
             left: 0,
-            animation: `ocean-fish-swim-${fish.direction} ${fish.duration}s linear ${fish.delay}s infinite`,
+            animation: `ocean-fish-swim-${fish.direction} ${fish.duration}s linear ${fish.delay}s infinite backwards`,
           }}
         >
           <Box sx={{ transform: fish.direction === 'ltr' ? 'scaleX(-1)' : 'none' }}>
@@ -281,11 +281,11 @@ const OceanBackground = () => {
             <path d="M219 152 L208 126" stroke="var(--color-badge-hot)" strokeWidth="4" />
             <path d="M219 152 L230 124" stroke="var(--color-badge-hot)" strokeWidth="4" />
 
-            <circle cx="104" cy="96" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.2s ease-in-out 0s infinite', transformOrigin: '104px 96px' }} />
-            <circle cx="128" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.6s ease-in-out 0.6s infinite', transformOrigin: '128px 92px' }} />
-            <circle cx="168" cy="90" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 2.8s ease-in-out 1.2s infinite', transformOrigin: '168px 90px' }} />
-            <circle cx="182" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.4s ease-in-out 1.8s infinite', transformOrigin: '182px 128px' }} />
-            <circle cx="230" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3s ease-in-out 0.9s infinite', transformOrigin: '230px 124px' }} />
+            <circle cx="104" cy="96" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.2s ease-in-out 0s infinite backwards', transformOrigin: '104px 96px' }} />
+            <circle cx="128" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.6s ease-in-out 0.6s infinite backwards', transformOrigin: '128px 92px' }} />
+            <circle cx="168" cy="90" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 2.8s ease-in-out 1.2s infinite backwards', transformOrigin: '168px 90px' }} />
+            <circle cx="182" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.4s ease-in-out 1.8s infinite backwards', transformOrigin: '182px 128px' }} />
+            <circle cx="230" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3s ease-in-out 0.9s infinite backwards', transformOrigin: '230px 124px' }} />
           </g>
 
           {/* 해초 (양치식물 스타일) */}
@@ -371,11 +371,11 @@ const OceanBackground = () => {
             <path d="M981 152 L992 126" stroke="var(--color-badge-hot)" strokeWidth="4" />
             <path d="M981 152 L970 124" stroke="var(--color-badge-hot)" strokeWidth="4" />
 
-            <circle cx="1096" cy="96" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.2s ease-in-out 0.3s infinite', transformOrigin: '1096px 96px' }} />
-            <circle cx="1072" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.6s ease-in-out 0.9s infinite', transformOrigin: '1072px 92px' }} />
-            <circle cx="1032" cy="90" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 2.8s ease-in-out 1.5s infinite', transformOrigin: '1032px 90px' }} />
-            <circle cx="1018" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.4s ease-in-out 2.1s infinite', transformOrigin: '1018px 128px' }} />
-            <circle cx="970" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3s ease-in-out 1.2s infinite', transformOrigin: '970px 124px' }} />
+            <circle cx="1096" cy="96" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.2s ease-in-out 0.3s infinite backwards', transformOrigin: '1096px 96px' }} />
+            <circle cx="1072" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.6s ease-in-out 0.9s infinite backwards', transformOrigin: '1072px 92px' }} />
+            <circle cx="1032" cy="90" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 2.8s ease-in-out 1.5s infinite backwards', transformOrigin: '1032px 90px' }} />
+            <circle cx="1018" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.4s ease-in-out 2.1s infinite backwards', transformOrigin: '1018px 128px' }} />
+            <circle cx="970" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3s ease-in-out 1.2s infinite backwards', transformOrigin: '970px 124px' }} />
           </g>
         </svg>
       </Box>
