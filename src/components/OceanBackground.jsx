@@ -19,6 +19,16 @@ const FISH = [
   { top: '52%', size: 22, duration: 19, delay: 6,  direction: 'rtl', color: 'var(--color-text-secondary)' },
   { top: '68%', size: 28, duration: 32, delay: 3,  direction: 'ltr', color: 'var(--color-accent)' },
   { top: '80%', size: 18, duration: 22, delay: 10, direction: 'rtl', color: 'var(--color-secondary)' },
+  { top: '22%', size: 16, duration: 24, delay: 8,  direction: 'ltr', color: 'var(--color-text-secondary)' },
+  { top: '44%', size: 12, duration: 17, delay: 12, direction: 'rtl', color: 'var(--color-accent)' },
+  { top: '60%', size: 20, duration: 29, delay: 5,  direction: 'rtl', color: 'var(--color-text-secondary)' },
+]
+
+const GOD_RAYS = [
+  { left: '12%', width: 120, rotate: -10, duration: 8,  delay: 0 },
+  { left: '38%', width: 90,  rotate: 7,   duration: 10, delay: 2.5 },
+  { left: '64%', width: 150, rotate: -6,  duration: 9,  delay: 1 },
+  { left: '84%', width: 100, rotate: 9,   duration: 11, delay: 4 },
 ]
 
 const SURFACE_END = 0.25
@@ -63,6 +73,7 @@ const OceanBackground = () => {
   const waveBackRef = useRef(null)
   const waveFrontRef = useRef(null)
   const seabedRef = useRef(null)
+  const godRaysRef = useRef(null)
   const rafRef = useRef(null)
 
   useEffect(() => {
@@ -88,6 +99,10 @@ const OceanBackground = () => {
       if (seabedRef.current) {
         seabedRef.current.style.opacity = String(seabedT)
         seabedRef.current.style.transform = `translateY(${lerp(20, 0, seabedT)}px)`
+      }
+
+      if (godRaysRef.current) {
+        godRaysRef.current.style.opacity = String(lerp(1, 0.1, depthT))
       }
     }
 
@@ -122,7 +137,30 @@ const OceanBackground = () => {
         background: 'linear-gradient(180deg, var(--color-sky-top) 0%, var(--color-sky-bottom) 100%)',
       }}
     >
-      <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '33vh' }} />
+      <Box ref={oceanRef} sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: '33vh' }}>
+        <Box ref={godRaysRef} sx={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          {GOD_RAYS.map((ray, i) => (
+            <Box
+              key={i}
+              data-ocean-decor
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: ray.left,
+                width: ray.width,
+                height: '70vh',
+                background: 'linear-gradient(180deg, rgba(230,241,245,0.4) 0%, rgba(230,241,245,0) 85%)',
+                filter: 'blur(6px)',
+                mixBlendMode: 'screen',
+                transformOrigin: 'top center',
+                '--ray-rotate': `${ray.rotate}deg`,
+                transform: `rotate(${ray.rotate}deg)`,
+                animation: `ocean-godray-shimmer ${ray.duration}s ease-in-out ${ray.delay}s infinite`,
+              }}
+            />
+          ))}
+        </Box>
+      </Box>
 
       {BUBBLES.map((bubble, i) => (
         <Box
@@ -243,11 +281,11 @@ const OceanBackground = () => {
             <path d="M219 152 L208 126" stroke="var(--color-badge-hot)" strokeWidth="4" />
             <path d="M219 152 L230 124" stroke="var(--color-badge-hot)" strokeWidth="4" />
 
-            <circle cx="104" cy="96" r="4" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="128" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="168" cy="90" r="4" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="182" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="230" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="104" cy="96" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.2s ease-in-out 0s infinite', transformOrigin: '104px 96px' }} />
+            <circle cx="128" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.6s ease-in-out 0.6s infinite', transformOrigin: '128px 92px' }} />
+            <circle cx="168" cy="90" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 2.8s ease-in-out 1.2s infinite', transformOrigin: '168px 90px' }} />
+            <circle cx="182" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.4s ease-in-out 1.8s infinite', transformOrigin: '182px 128px' }} />
+            <circle cx="230" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3s ease-in-out 0.9s infinite', transformOrigin: '230px 124px' }} />
           </g>
 
           {/* 해초 (양치식물 스타일) */}
@@ -333,11 +371,11 @@ const OceanBackground = () => {
             <path d="M981 152 L992 126" stroke="var(--color-badge-hot)" strokeWidth="4" />
             <path d="M981 152 L970 124" stroke="var(--color-badge-hot)" strokeWidth="4" />
 
-            <circle cx="1096" cy="96" r="4" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="1072" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="1032" cy="90" r="4" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="1018" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" />
-            <circle cx="970" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" />
+            <circle cx="1096" cy="96" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.2s ease-in-out 0.3s infinite', transformOrigin: '1096px 96px' }} />
+            <circle cx="1072" cy="92" r="4.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.6s ease-in-out 0.9s infinite', transformOrigin: '1072px 92px' }} />
+            <circle cx="1032" cy="90" r="4" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 2.8s ease-in-out 1.5s infinite', transformOrigin: '1032px 90px' }} />
+            <circle cx="1018" cy="128" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3.4s ease-in-out 2.1s infinite', transformOrigin: '1018px 128px' }} />
+            <circle cx="970" cy="124" r="3.5" fill="var(--color-secondary)" stroke="none" data-ocean-decor style={{ animation: 'ocean-coral-glow 3s ease-in-out 1.2s infinite', transformOrigin: '970px 124px' }} />
           </g>
         </svg>
       </Box>
