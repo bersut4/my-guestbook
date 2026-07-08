@@ -4,7 +4,8 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Chip from '@mui/material/Chip'
+import Grid from '@mui/material/Grid'
+import LinearProgress from '@mui/material/LinearProgress'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Fade from '@mui/material/Fade'
@@ -34,29 +35,49 @@ const SkillTreeSection = () => {
         <Card sx={{ mb: 4 }}>
           <CardContent sx={{ p: 4 }}>
             <Typography variant="body1" sx={{ color: 'var(--color-text-secondary)', lineHeight: 1.9, mb: 3 }}>
-              제가 주로 다루는 기술이에요. 전체 스킬은 About Me 페이지에서 더 볼 수 있어요.
+              제가 주로 다루는 기술과 숙련도예요. 전체 스킬은 About Me 페이지에서 더 볼 수 있어요.
             </Typography>
 
             <Fade in key={homeData.updatedAt} timeout={400}>
-              <Stack direction="row" spacing={1.5} aria-label="주요 스킬" sx={{ flexWrap: 'wrap', gap: 1.5 }}>
+              <Grid container spacing={3} aria-label="주요 스킬 숙련도">
                 {homeData.topSkills.map((skill) => {
                   const Icon = getSkillIcon(skill.name)
                   const color = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
                   return (
-                    <Chip
-                      key={skill.id}
-                      icon={<Icon sx={{ fontSize: '18px !important', color: `${color} !important` }} />}
-                      label={skill.name}
-                      sx={{
-                        backgroundColor: `${color}15`,
-                        color: 'var(--color-text-primary)',
-                        border: `1px solid ${color}55`,
-                        px: 1,
-                      }}
-                    />
+                    <Grid key={skill.id} size={{ xs: 12, sm: 6 }}>
+                      <Stack
+                        direction="row"
+                        sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 0.75 }}
+                      >
+                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                          <Icon sx={{ fontSize: 18, color }} />
+                          <Typography variant="body2" sx={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
+                            {skill.name}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="body2" sx={{ color, fontWeight: 700 }}>
+                          {skill.level}%
+                        </Typography>
+                      </Stack>
+                      <LinearProgress
+                        variant="determinate"
+                        value={skill.level}
+                        aria-label={`${skill.name} 숙련도 ${skill.level}%`}
+                        sx={{
+                          height: 8,
+                          borderRadius: 4,
+                          backgroundColor: 'var(--color-border-dark)',
+                          '& .MuiLinearProgress-bar': {
+                            backgroundColor: color,
+                            borderRadius: 4,
+                            transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                          },
+                        }}
+                      />
+                    </Grid>
                   )
                 })}
-              </Stack>
+              </Grid>
             </Fade>
           </CardContent>
         </Card>
