@@ -13,10 +13,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
 import { usePortfolio } from '../context/PortfolioContext'
-
-const MOBILE_QUERY = '(max-width:767px)'
-const TABLET_UP_QUERY = '(min-width:768px)'
-const DESKTOP_UP_QUERY = '(min-width:1200px)'
+import { MOBILE_QUERY, TABLET_UP_QUERY, DESKTOP_UP_QUERY } from '../utils/breakpoints'
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },

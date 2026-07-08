@@ -23,8 +23,8 @@ import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import Tooltip from '@mui/material/Tooltip'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { useTheme } from '@mui/material/styles'
 import { useAdmin } from '../context/AdminContext'
+import { MOBILE_QUERY } from '../utils/breakpoints'
 
 const NAV_ITEMS = [
   { label: 'Home',       path: '/' },
@@ -35,8 +35,7 @@ const NAV_ITEMS = [
 const Navbar = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isMobile = useMediaQuery(MOBILE_QUERY)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { user, isAdmin, login, logout } = useAdmin()
   const [adminOpen, setAdminOpen] = useState(false)
