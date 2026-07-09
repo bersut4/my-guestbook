@@ -10,10 +10,12 @@ import LaunchIcon from '@mui/icons-material/Launch'
 import { getTechIcon } from '../utils/techIcons'
 import { getMobileThumbnailUrl } from '../utils/thumbnail'
 import { buttonHoverSx, imageZoomSx, skillChipHoverSx } from '../utils/hoverEffects'
+import { useMagnetic } from '../hooks/useMagnetic'
 
 const ProjectCard = ({ project }) => {
   const { title, description, tech_stack: techStack = [], detail_url: detailUrl, thumbnail_url: thumbnailUrl } = project
   const mobileThumbnailUrl = getMobileThumbnailUrl(thumbnailUrl)
+  const demoBtnRef = useMagnetic(0.35, 80)
 
   return (
     <Card
@@ -40,6 +42,7 @@ const ProjectCard = ({ project }) => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${title} 사이트 새 탭에서 열기`}
+        data-cursor="view"
         sx={{
           position: 'relative',
           display: 'flex',
@@ -178,6 +181,7 @@ const ProjectCard = ({ project }) => {
 
       <CardActions sx={{ px: 2, pb: 2 }}>
         <Button
+          ref={demoBtnRef}
           fullWidth
           variant="outlined"
           endIcon={<LaunchIcon />}

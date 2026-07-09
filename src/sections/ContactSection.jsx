@@ -13,11 +13,13 @@ import SendIcon from '@mui/icons-material/Send'
 import { usePortfolio } from '../context/PortfolioContext'
 import { buttonHoverSx } from '../utils/hoverEffects'
 import ScrollReveal from '../components/ScrollReveal'
+import { useMagnetic } from '../hooks/useMagnetic'
 
 const CONTACT_EMAIL = 'bersut5@gmail.com'
 
 const ContactSection = () => {
   const { notify } = usePortfolio()
+  const sendBtnRef = useMagnetic(0.3, 90)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState({})
 
@@ -133,6 +135,7 @@ const ContactSection = () => {
                 helperText={errors.message}
               />
               <Button
+                ref={sendBtnRef}
                 variant="contained"
                 color="primary"
                 size="large"

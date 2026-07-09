@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import FeedbackSnackbar from './components/FeedbackSnackbar'
 import ScrollProgressBar from './components/ScrollProgressBar'
 import SectionDotNav from './components/SectionDotNav'
+import CustomCursor from './components/CustomCursor'
 import { PortfolioProvider } from './context/PortfolioContext'
 import { AdminProvider } from './context/AdminContext'
 
@@ -36,6 +37,7 @@ function App() {
       <AdminProvider>
         <PortfolioProvider>
           <HashRouter>
+            <CustomCursor />
             <ScrollProgressBar />
             <Navbar />
             <ScrollToTopOnRouteChange />

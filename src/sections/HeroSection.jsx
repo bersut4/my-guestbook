@@ -16,6 +16,7 @@ import { usePortfolio } from '../context/PortfolioContext'
 import { MOBILE_QUERY, TABLET_UP_QUERY, DESKTOP_UP_QUERY } from '../utils/breakpoints'
 import { buttonHoverSx, imageZoomSx } from '../utils/hoverEffects'
 import { useParallax } from '../hooks/useParallax'
+import { useMagnetic } from '../hooks/useMagnetic'
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },
@@ -32,11 +33,40 @@ const scrollPastHero = () => {
 
 const TOUCH_TARGET = { minWidth: 44, minHeight: 44 }
 
+const MagneticSocialButton = ({ label, href, icon: Icon, external }) => {
+  const magneticRef = useMagnetic(0.4, 60)
+  return (
+    <Tooltip title={label}>
+      <IconButton
+        ref={magneticRef}
+        component="a"
+        href={href}
+        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        aria-label={label}
+        sx={{
+          ...TOUCH_TARGET,
+          color: 'var(--color-text-secondary)',
+          border: '1px solid var(--color-border-dark)',
+          transition: 'transform 0.25s ease, color 0.25s ease, border-color 0.25s ease',
+          '&:hover': {
+            color: 'var(--color-secondary)',
+            borderColor: 'var(--color-secondary)',
+          },
+        }}
+      >
+        <Icon fontSize="small" />
+      </IconButton>
+    </Tooltip>
+  )
+}
+
 const HeroSection = () => {
   const { homeData } = usePortfolio()
   const { basicInfo } = homeData
   const isMobile = useMediaQuery(MOBILE_QUERY)
   const parallaxRef = useParallax(0.15)
+  const projectsBtnRef = useMagnetic(0.3, 100)
+  const contactBtnRef = useMagnetic(0.3, 100)
 
   return (
     <Box
@@ -174,6 +204,7 @@ const HeroSection = () => {
               }}
             >
               <Button
+                ref={projectsBtnRef}
                 variant="contained"
                 size="large"
                 fullWidth={isMobile}
@@ -188,6 +219,7 @@ const HeroSection = () => {
                 프로젝트 보기
               </Button>
               <Button
+                ref={contactBtnRef}
                 variant="outlined"
                 size="large"
                 fullWidth={isMobile}
@@ -216,28 +248,8 @@ const HeroSection = () => {
                 animation: 'hero-fade-up 0.6s ease-out 0.55s both',
               }}
             >
-              {SOCIAL_LINKS.map(({ label, href, icon: Icon, external }) => (
-                <Tooltip key={label} title={label}>
-                  <IconButton
-                    component="a"
-                    href={href}
-                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    aria-label={label}
-                    sx={{
-                      ...TOUCH_TARGET,
-                      color: 'var(--color-text-secondary)',
-                      border: '1px solid var(--color-border-dark)',
-                      transition: 'transform 0.25s ease, color 0.25s ease, border-color 0.25s ease',
-                      '&:hover': {
-                        color: 'var(--color-secondary)',
-                        borderColor: 'var(--color-secondary)',
-                        transform: 'translateY(-3px)',
-                      },
-                    }}
-                  >
-                    <Icon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
+              {SOCIAL_LINKS.map((social) => (
+                <MagneticSocialButton key={social.label} {...social} />
               ))}
             </Stack>
           </Grid>

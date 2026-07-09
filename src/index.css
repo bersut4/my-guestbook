@@ -59,6 +59,59 @@ a:hover { color: var(--color-link-hover); }
   outline-offset: 2px;
 }
 
+/* 커스텀 커서 — 데스크톱 정밀 포인터에서만 네이티브 커서를 숨긴다. */
+.custom-cursor-active,
+.custom-cursor-active *:not(input):not(textarea) {
+  cursor: none !important;
+}
+
+.cursor-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.cursor-trail-dot {
+  position: fixed;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* 복어 커서 — 스프라이트 한 장(왼쪽: 평상시, 오른쪽: 클릭 가능)을 background-position으로 전환 */
+.cursor-fish {
+  position: fixed;
+  top: -28px;
+  left: -28px;
+  width: 56px;
+  height: 56px;
+  background-image: url('/cursors/pufferfish.png');
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  will-change: transform;
+}
+
+.cursor-fish[data-hover='true'] {
+  background-position: 100% 0%;
+}
+
+.cursor-fish[data-pressed='true'] {
+  filter: brightness(0.9);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-root {
+    display: none;
+  }
+}
+
 @keyframes ocean-bubble-rise {
   0%   { transform: translate(0, 0) scale(0.85); opacity: 0; }
   10%  { opacity: 0.8; }
@@ -132,4 +185,5 @@ a:hover { color: var(--color-link-hover); }
   .loading-spinner-ring { animation: none !important; }
   .skeleton-shimmer-block::after { animation: none !important; }
   [data-scroll-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .cursor-ring { transition: none !important; }
 }
