@@ -172,13 +172,17 @@ const HeroSection = () => {
                 onClick={() => setRolesPaused((prev) => !prev)}
                 aria-label={rolesPaused ? '타이핑 애니메이션 재생' : '타이핑 애니메이션 일시정지'}
                 sx={{
-                  p: 0.25,
-                  color: 'var(--color-secondary)',
-                  opacity: 0.55,
-                  '&:hover': { opacity: 1, backgroundColor: 'transparent' },
+                  width: 28,
+                  height: 28,
+                  color: rolesPaused ? 'var(--color-primary-dark)' : 'var(--color-secondary)',
+                  backgroundColor: rolesPaused ? 'var(--color-secondary)' : 'rgba(45,212,191,0.12)',
+                  transition: 'background-color 0.2s ease, color 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: rolesPaused ? 'var(--color-button-hover)' : 'rgba(45,212,191,0.25)',
+                  },
                 }}
               >
-                {rolesPaused ? <PlayArrowIcon sx={{ fontSize: 13 }} /> : <PauseIcon sx={{ fontSize: 13 }} />}
+                {rolesPaused ? <PlayArrowIcon sx={{ fontSize: 15 }} /> : <PauseIcon sx={{ fontSize: 15 }} />}
               </IconButton>
             </Box>
 
