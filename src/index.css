@@ -192,19 +192,15 @@ a:hover { color: var(--color-link-hover); }
 
 /* 문장 전체가 하나로 이어지는 그라데이션처럼 보이게 하는 효과.
    각 글자(inline-block)는 문장 전체 폭만큼 큰 그라데이션에서 자기 위치에 해당하는
-   조각만 background-position으로 보여준다(--split-offset). --hero-gradient-travel은
-   모든 글자에 동일하게(0~양수 값만) 더해져 그라데이션이 오른쪽으로만 흐르므로,
-   이미지 시작 지점(0em) 이전으로는 절대 밀려나지 않는다 — SplitText가 이 여유폭만큼
+   조각만 background-position으로 보여준다(--split-offset, 글자마다 다른 고정값).
+   흐르는 효과는 background-position-x 자체를 키프레임으로 직접 애니메이션한다 —
+   @property로 커스텀 프로퍼티를 등록해 애니메이션하는 방식은 브라우저 지원이
+   갈려서 대신 표준 프로퍼티만으로 구현한다. 항상 오른쪽으로만(+2em) 움직이므로
+   이미지 시작 지점 이전으로는 밀려나지 않는다 — SplitText가 이 여유폭만큼
    --split-total-width를 넉넉하게 계산해서 끝 글자도 이미지 범위를 벗어나지 않는다. */
-@property --hero-gradient-travel {
-  syntax: '<length>';
-  inherits: true;
-  initial-value: 0em;
-}
-
 @keyframes hero-gradient-sweep {
-  0%, 100% { --hero-gradient-travel: 0em; }
-  50%      { --hero-gradient-travel: 2em; }
+  0%, 100% { background-position-x: calc(var(--split-offset, 0em) * -1); }
+  50%      { background-position-x: calc((var(--split-offset, 0em) + 2em) * -1); }
 }
 
 .split-char.split-char--gradient {
@@ -218,7 +214,7 @@ a:hover { color: var(--color-link-hover); }
   );
   background-repeat: no-repeat;
   background-size: var(--split-total-width, 20em) 100%;
-  background-position-x: calc((var(--split-offset, 0em) + var(--hero-gradient-travel, 0em)) * -1);
+  background-position-x: calc(var(--split-offset, 0em) * -1);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
