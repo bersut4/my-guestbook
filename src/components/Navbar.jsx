@@ -25,6 +25,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useAdmin } from '../context/AdminContext'
 import { MOBILE_QUERY } from '../utils/breakpoints'
 import { useScrollDirection } from '../hooks/useScrollDirection'
+import ThemeModeToggle from './ThemeModeToggle'
 
 const NAV_ITEMS = [
   { label: 'Home',       path: '/' },
@@ -145,6 +146,7 @@ const Navbar = () => {
 
         {isMobile ? (
           <>
+            <ThemeModeToggle />
             <AdminButton />
             <IconButton
               sx={{ color: 'var(--color-secondary)' }}
@@ -210,6 +212,7 @@ const Navbar = () => {
                 {item.label}
               </Button>
             ))}
+            <ThemeModeToggle />
             <AdminButton />
           </Box>
         )}

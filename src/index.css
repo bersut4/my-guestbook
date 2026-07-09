@@ -30,7 +30,8 @@
   --color-link-hover:     #2DD4BF;
   --color-badge-hot:      #FF6B6B;
 
-  /* Ocean Scene — 하늘·파도·모래 */
+  /* Ocean Scene — 하늘·파도·모래 (라이트 모드에서도 실제 바다 배경(OceanBackground)의
+     색은 그대로 유지 — 장식용 배경 자체가 밝기와 무관한 "바다" 컨셉이라 안 바꾼다) */
   --color-sky-top:     #7EC8E3;
   --color-sky-bottom:  #2E6E90;
   --color-wave-crest:  #3A7A98;
@@ -39,7 +40,36 @@
   --color-sand-dark:   #6B5940;
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+/* 라이트 모드 — UI 크롬(카드/텍스트/보더 등)만 밝게 바꾼다.
+   --color-primary-dark, --color-accent, --color-badge-hot 등은 브랜드 포인트 컬러라
+   테마와 무관하게 유지(예: 청록 배경 위 대비 텍스트로 계속 쓰임). */
+[data-theme='light'] {
+  --color-primary:       #F0F7F9;
+  --color-primary-light: #FFFFFF;
+
+  --color-secondary: #0D9488;
+
+  --color-bg-primary:   #F0F7F9;
+  --color-bg-secondary: #E4F0F3;
+  --color-bg-card:      #FFFFFF;
+
+  --color-text-primary:   #0B2233;
+  --color-text-secondary: #4A6572;
+  --color-text-muted:     #8FA9B3;
+
+  --color-border-gold: #CFE3E8;
+  --color-border-dark: #D7E6EA;
+
+  --color-button-primary: #0D9488;
+  --color-button-hover:   #14B8A6;
+  --color-link:           #0B2233;
+  --color-link-hover:     #0D9488;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
 
 body {
   margin: 0;

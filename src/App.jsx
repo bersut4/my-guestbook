@@ -11,6 +11,7 @@ import SectionDotNav from './components/SectionDotNav'
 import CustomCursor from './components/CustomCursor'
 import { PortfolioProvider } from './context/PortfolioContext'
 import { AdminProvider } from './context/AdminContext'
+import { ThemeModeProvider } from './context/ThemeModeContext'
 
 const AboutMePage = lazy(() => import('./pages/AboutMePage'))
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
@@ -34,25 +35,27 @@ const ScrollToTopOnRouteChange = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <AdminProvider>
-        <PortfolioProvider>
-          <HashRouter>
-            <CustomCursor />
-            <ScrollProgressBar />
-            <Navbar />
-            <ScrollToTopOnRouteChange />
-            <SectionDotNav />
-            <Suspense fallback={<RouteLoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<AboutMePage />} />
-                <Route path="/projects" element={<ProjectsPage />} />
-              </Routes>
-            </Suspense>
-            <FeedbackSnackbar />
-          </HashRouter>
-        </PortfolioProvider>
-      </AdminProvider>
+      <ThemeModeProvider>
+        <AdminProvider>
+          <PortfolioProvider>
+            <HashRouter>
+              <CustomCursor />
+              <ScrollProgressBar />
+              <Navbar />
+              <ScrollToTopOnRouteChange />
+              <SectionDotNav />
+              <Suspense fallback={<RouteLoadingFallback />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/about" element={<AboutMePage />} />
+                  <Route path="/projects" element={<ProjectsPage />} />
+                </Routes>
+              </Suspense>
+              <FeedbackSnackbar />
+            </HashRouter>
+          </PortfolioProvider>
+        </AdminProvider>
+      </ThemeModeProvider>
     </ErrorBoundary>
   )
 }

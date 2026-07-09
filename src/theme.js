@@ -14,15 +14,15 @@ const theme = createTheme({
       contrastText: '#071019',
     },
     background: {
-      default: '#071019',
-      paper: '#123047',
+      default: 'var(--color-bg-primary)',
+      paper: 'var(--color-bg-card)',
     },
     text: {
-      primary: '#E6F1F5',
-      secondary: '#8FB8C7',
-      disabled: '#4A6572',
+      primary: 'var(--color-text-primary)',
+      secondary: 'var(--color-text-secondary)',
+      disabled: 'var(--color-text-muted)',
     },
-    divider: '#16323F',
+    divider: 'var(--color-border-dark)',
     error: { main: '#FF6B6B' },
   },
   typography: {
@@ -45,7 +45,7 @@ const theme = createTheme({
           borderRadius: 8,
         },
         containedPrimary: {
-          color: '#071019',
+          color: 'var(--color-primary-dark)',
           backgroundImage: 'linear-gradient(135deg, #2DD4BF 0%, #2DD4BF 60%, #5EEAD4 100%)',
           backgroundSize: '200% 200%',
           backgroundPosition: '0% 50%',
@@ -79,8 +79,8 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: '#123047',
-          border: '1px solid #16323F',
+          backgroundColor: 'var(--color-bg-card)',
+          border: '1px solid var(--color-border-dark)',
           borderRadius: 12,
         },
       },
@@ -88,8 +88,8 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#071019',
-          borderBottom: '1px solid #1C4A52',
+          backgroundColor: 'var(--color-bg-primary)',
+          borderBottom: '1px solid var(--color-border-gold)',
         },
       },
     },
@@ -97,9 +97,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            '& fieldset': { borderColor: '#16323F' },
-            '&:hover fieldset': { borderColor: '#2DD4BF' },
-            '&.Mui-focused fieldset': { borderColor: '#2DD4BF' },
+            '& fieldset': { borderColor: 'var(--color-border-dark)' },
+            '&:hover fieldset': { borderColor: 'var(--color-secondary)' },
+            '&.Mui-focused fieldset': { borderColor: 'var(--color-secondary)' },
           },
         },
       },

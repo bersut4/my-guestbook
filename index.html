@@ -2,6 +2,18 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // 첫 페인트 전에 동기적으로 테마를 정해서 깜빡임(FOUC)을 막는다.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme-mode');
+          var theme = stored === 'light' || stored === 'dark'
+            ? stored
+            : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Portfolio</title>
