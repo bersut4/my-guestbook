@@ -149,12 +149,20 @@ const HeroSection = () => {
                   lineHeight: 1,
                   fontSize: '0.7rem',
                   textShadow: '0 1px 6px rgba(3,10,15,0.5)',
+                  opacity: rolesPaused ? 0.5 : 1,
+                  transition: 'opacity 0.2s ease',
                   [`@media ${TABLET_UP_QUERY}`]: { fontSize: '0.75rem' },
                   [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '0.8rem' },
                 }}
               >
                 {basicInfo.name} · {typedRole}
-                <Box component="span" className="typewriter-cursor">|</Box>
+                <Box
+                  component="span"
+                  className="typewriter-cursor"
+                  sx={rolesPaused ? { animation: 'none', opacity: 1 } : undefined}
+                >
+                  |
+                </Box>
               </Typography>
               <Box component="span" sx={visuallyHidden}>
                 {basicInfo.name} · {ROLES.join(', ')}
