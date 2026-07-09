@@ -4,9 +4,10 @@ const NBSP = ' '
 // 한글 완성형 글자는 폰트에 관계없이 대략 전각(1em) 너비라서, 각 글자가
 // 하나의 큰 그라데이션에서 자기 위치에 맞는 조각만 보여주도록 근사치로 쓴다.
 const CHAR_WIDTH_EM = 1.05
-// index.css의 hero-gradient-sweep 키프레임이 --hero-gradient-travel을 0~이 값까지 움직인다.
-// 그라데이션 이미지 폭에도 같은 여유를 더해야 흐르는 동안 이미지 범위를 벗어나지 않는다.
-const GRADIENT_TRAVEL_EM = 2
+// index.css의 hero-gradient-sweep 키프레임이 background-position-x를 0~이 값만큼 더 움직인다.
+// 값이 클수록 흐르는 게 더 뚜렷하게 보인다. 그라데이션 이미지 폭에도 같은 여유를 더해야
+// 흐르는 동안 이미지 범위를 벗어나 글자가 투명해지는 일이 없다.
+const GRADIENT_TRAVEL_EM = 8
 
 // 문자열을 글자 단위로 쪼개 순차적으로(translateY + opacity) 등장시킨다.
 // gradient=true면 전체 문장이 하나로 이어지는 그라데이션을 배경-클립으로 표현하고

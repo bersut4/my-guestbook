@@ -31,6 +31,16 @@ const SOCIAL_LINKS = [
 
 const ROLES = ['개발자', '디자이너', '크리에이터']
 
+// Hero는 항상 OceanBackground(하늘·바다) 위에 겹쳐지고, 그 배경 자체는 다크/라이트
+// 토글과 무관하게 항상 같은 색이다. 그래서 이 위에 놓이는 텍스트/아이콘도 토글에 따라
+// var(--color-*)로 바뀌면(라이트 모드에서 어두운 톤으로 반전) 배경과 비슷해져 안 보이므로
+// 원래 다크 테마 색을 고정값으로 써서 토글과 무관하게 항상 잘 보이도록 한다.
+const HERO_TEAL = '#2DD4BF'
+const HERO_TEAL_HOVER = '#5EEAD4'
+const HERO_TEXT = '#E6F1F5'
+const HERO_TEXT_SECONDARY = '#8FB8C7'
+const HERO_BORDER = '#16323F'
+
 const scrollToSection = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
@@ -53,12 +63,12 @@ const MagneticSocialButton = ({ label, href, icon: Icon, external }) => {
         aria-label={label}
         sx={{
           ...TOUCH_TARGET,
-          color: 'var(--color-text-secondary)',
-          border: '1px solid var(--color-border-dark)',
+          color: HERO_TEXT_SECONDARY,
+          border: `1px solid ${HERO_BORDER}`,
           transition: 'transform 0.25s ease, color 0.25s ease, border-color 0.25s ease',
           '&:hover': {
-            color: 'var(--color-secondary)',
-            borderColor: 'var(--color-secondary)',
+            color: HERO_TEAL,
+            borderColor: HERO_TEAL,
           },
         }}
       >
@@ -144,7 +154,7 @@ const HeroSection = () => {
                 variant="overline"
                 aria-hidden="true"
                 sx={{
-                  color: 'var(--color-secondary)',
+                  color: HERO_TEAL,
                   letterSpacing: 4,
                   lineHeight: 1,
                   fontSize: '0.7rem',
@@ -174,11 +184,11 @@ const HeroSection = () => {
                 sx={{
                   width: 28,
                   height: 28,
-                  color: rolesPaused ? 'var(--color-primary-dark)' : 'var(--color-secondary)',
-                  backgroundColor: rolesPaused ? 'var(--color-secondary)' : 'rgba(45,212,191,0.12)',
+                  color: rolesPaused ? 'var(--color-primary-dark)' : HERO_TEAL,
+                  backgroundColor: rolesPaused ? HERO_TEAL : 'rgba(45,212,191,0.12)',
                   transition: 'background-color 0.2s ease, color 0.2s ease',
                   '&:hover': {
-                    backgroundColor: rolesPaused ? 'var(--color-button-hover)' : 'rgba(45,212,191,0.25)',
+                    backgroundColor: rolesPaused ? HERO_TEAL_HOVER : 'rgba(45,212,191,0.25)',
                   },
                 }}
               >
@@ -206,7 +216,7 @@ const HeroSection = () => {
               sx={{
                 width: 60,
                 height: 2,
-                backgroundColor: 'var(--color-secondary)',
+                backgroundColor: HERO_TEAL,
                 mx: isMobile ? 'auto' : 0,
                 mb: { xs: 2, md: 3 },
               }}
@@ -216,7 +226,7 @@ const HeroSection = () => {
               variant="body1"
               data-hero-decor
               sx={{
-                color: 'var(--color-text-primary)',
+                color: HERO_TEXT,
                 textShadow: '0 1px 8px rgba(3,10,15,0.55)',
                 lineHeight: 1.8,
                 maxWidth: 480,
@@ -262,11 +272,11 @@ const HeroSection = () => {
                 fullWidth={isMobile}
                 onClick={() => scrollToSection('contact-section')}
                 sx={{
-                  color: 'var(--color-secondary)',
-                  borderColor: 'var(--color-secondary)',
+                  color: HERO_TEAL,
+                  borderColor: HERO_TEAL,
                   ...buttonHoverSx(),
                   '&:hover': {
-                    borderColor: 'var(--color-button-hover)',
+                    borderColor: HERO_TEAL_HOVER,
                     backgroundColor: 'rgba(45,212,191,0.08)',
                   },
                 }}
@@ -377,7 +387,7 @@ const HeroSection = () => {
           left: '50%',
           bottom: { xs: 12, md: 24 },
           transform: 'translateX(-50%)',
-          color: 'var(--color-secondary)',
+          color: HERO_TEAL,
           animation: 'hero-bounce 2s ease-in-out infinite',
           zIndex: 1,
         }}

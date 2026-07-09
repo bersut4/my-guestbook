@@ -229,12 +229,13 @@ a:hover { color: var(--color-link-hover); }
    조각만 background-position으로 보여준다(--split-offset, 글자마다 다른 고정값).
    흐르는 효과는 background-position-x 자체를 키프레임으로 직접 애니메이션한다 —
    @property로 커스텀 프로퍼티를 등록해 애니메이션하는 방식은 브라우저 지원이
-   갈려서 대신 표준 프로퍼티만으로 구현한다. 항상 오른쪽으로만(+2em) 움직이므로
+   갈려서 대신 표준 프로퍼티만으로 구현한다. 항상 오른쪽으로만(+8em) 움직이므로
    이미지 시작 지점 이전으로는 밀려나지 않는다 — SplitText가 이 여유폭만큼
-   --split-total-width를 넉넉하게 계산해서 끝 글자도 이미지 범위를 벗어나지 않는다. */
+   --split-total-width를 넉넉하게 계산해서 끝 글자도 이미지 범위를 벗어나지 않는다.
+   +8em으로 크게 움직여야 눈에 띄게 흐르는 게 보인다(+2em은 너무 미묘해서 안 보임). */
 @keyframes hero-gradient-sweep {
   0%, 100% { background-position-x: calc(var(--split-offset, 0em) * -1); }
-  50%      { background-position-x: calc((var(--split-offset, 0em) + 2em) * -1); }
+  50%      { background-position-x: calc((var(--split-offset, 0em) + 8em) * -1); }
 }
 
 .split-char.split-char--gradient {
