@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -12,16 +13,23 @@ import PersonIcon from '@mui/icons-material/Person'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
+import { visuallyHidden } from '@mui/utils'
 import { usePortfolio } from '../context/PortfolioContext'
 import { MOBILE_QUERY, TABLET_UP_QUERY, DESKTOP_UP_QUERY } from '../utils/breakpoints'
 import { buttonHoverSx, imageZoomSx } from '../utils/hoverEffects'
 import { useParallax } from '../hooks/useParallax'
 import { useMagnetic } from '../hooks/useMagnetic'
+import { useTypewriter } from '../hooks/useTypewriter'
+import SplitText from '../components/SplitText'
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },
   { label: '이메일', href: 'mailto:bersut5@gmail.com', icon: EmailIcon, external: false },
 ]
+
+const ROLES = ['개발자', '디자이너', '크리에이터']
 
 const scrollToSection = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -67,6 +75,8 @@ const HeroSection = () => {
   const parallaxRef = useParallax(0.15)
   const projectsBtnRef = useMagnetic(0.3, 100)
   const contactBtnRef = useMagnetic(0.3, 100)
+  const [rolesPaused, setRolesPaused] = useState(false)
+  const typedRole = useTypewriter(ROLES, { paused: rolesPaused })
 
   return (
     <Box
@@ -127,6 +137,7 @@ const HeroSection = () => {
             >
               <Typography
                 variant="overline"
+                aria-hidden="true"
                 sx={{
                   color: 'var(--color-secondary)',
                   letterSpacing: 4,
@@ -137,13 +148,30 @@ const HeroSection = () => {
                   [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '0.8rem' },
                 }}
               >
-                {basicInfo.name} · WEB DESIGNER
+                {basicInfo.name} · {typedRole}
+                <Box component="span" className="typewriter-cursor">|</Box>
               </Typography>
+              <Box component="span" sx={visuallyHidden}>
+                {basicInfo.name} · {ROLES.join(', ')}
+              </Box>
+              <IconButton
+                size="small"
+                onClick={() => setRolesPaused((prev) => !prev)}
+                aria-label={rolesPaused ? '타이핑 애니메이션 재생' : '타이핑 애니메이션 일시정지'}
+                sx={{
+                  p: 0.25,
+                  color: 'var(--color-secondary)',
+                  opacity: 0.55,
+                  '&:hover': { opacity: 1, backgroundColor: 'transparent' },
+                }}
+              >
+                {rolesPaused ? <PlayArrowIcon sx={{ fontSize: 13 }} /> : <PauseIcon sx={{ fontSize: 13 }} />}
+              </IconButton>
             </Box>
 
             <Typography
               variant="h1"
-              data-hero-decor
+              className="hero-gradient-text"
               sx={{
                 fontWeight: 800,
                 lineHeight: 1.3,
@@ -159,10 +187,9 @@ const HeroSection = () => {
                 WebkitBackgroundClip: 'text',
                 color: 'transparent',
                 WebkitTextFillColor: 'transparent',
-                animation: 'hero-fade-up 0.6s ease-out 0.15s both',
               }}
             >
-              몰입한 시간만큼 실력이 되는 사람입니다
+              <SplitText text="몰입한 시간만큼 실력이 되는 사람입니다" startDelay={0.15} />
             </Typography>
 
             <Box
