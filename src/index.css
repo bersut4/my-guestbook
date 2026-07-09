@@ -240,11 +240,9 @@ a:hover { color: var(--color-link-hover); }
   .loading-spinner-ring { animation: none !important; }
   .skeleton-shimmer-block::after { animation: none !important; }
   [data-scroll-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  /* 글자 등장(이동)은 접근성을 위해 끄지만, 그라데이션 색 흐름은 화면이 움직이는
+     효과가 아니라서 prefers-reduced-motion과 무관하게 계속 재생한다. */
   .split-char { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .split-char.split-char--gradient {
-    background: none !important;
-    color: var(--color-text-primary) !important;
-    -webkit-text-fill-color: var(--color-text-primary) !important;
-  }
+  .split-char.split-char--gradient { animation: hero-gradient-sweep 5s ease-in-out infinite !important; }
   .typewriter-cursor { animation: none !important; }
 }
