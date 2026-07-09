@@ -4,6 +4,7 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import GuestbookForm from '../components/guestbook/GuestbookForm'
 import GuestbookList from '../components/guestbook/GuestbookList'
+import ScrollReveal from '../components/ScrollReveal'
 
 const GuestbookSection = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0)
@@ -24,8 +25,12 @@ const GuestbookSection = () => {
           방문해주셔서 감사합니다. 짧은 인사나 피드백을 남겨주세요!
         </Typography>
 
-        <GuestbookForm onSubmitted={() => setRefreshTrigger((prev) => prev + 1)} />
-        <GuestbookList refreshTrigger={refreshTrigger} />
+        <ScrollReveal>
+          <GuestbookForm onSubmitted={() => setRefreshTrigger((prev) => prev + 1)} />
+        </ScrollReveal>
+        <ScrollReveal delay={0.1}>
+          <GuestbookList refreshTrigger={refreshTrigger} />
+        </ScrollReveal>
       </Container>
     </Box>
   )

@@ -3,12 +3,13 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
-import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { useProjects } from '../hooks/useProjects'
 import ProjectCard from '../components/ProjectCard'
+import SkeletonCard from '../components/SkeletonCard'
+import ScrollReveal from '../components/ScrollReveal'
 import { buttonHoverSx } from '../utils/hoverEffects'
 
 const ProjectsSection = () => {
@@ -32,9 +33,13 @@ const ProjectsSection = () => {
         </Typography>
 
         {loading && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-            <CircularProgress sx={{ color: 'var(--color-secondary)' }} />
-          </Box>
+          <Grid container spacing={3} sx={{ mb: 4 }} aria-hidden="true">
+            {[0, 1, 2].map((i) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
+                <SkeletonCard />
+              </Grid>
+            ))}
+          </Grid>
         )}
 
         {!loading && error && (
@@ -45,9 +50,11 @@ const ProjectsSection = () => {
 
         {!loading && !error && projects.length > 0 && (
           <Grid container spacing={3} sx={{ mb: 4 }}>
-            {projects.map((project) => (
+            {projects.map((project, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={project.id}>
-                <ProjectCard project={project} />
+                <ScrollReveal delay={(index % 3) * 0.1} sx={{ height: '100%' }}>
+                  <ProjectCard project={project} />
+                </ScrollReveal>
               </Grid>
             ))}
           </Grid>

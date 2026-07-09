@@ -2,10 +2,11 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
-import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 import { useProjects } from '../hooks/useProjects'
 import ProjectCard from '../components/ProjectCard'
+import SkeletonCard from '../components/SkeletonCard'
+import ScrollReveal from '../components/ScrollReveal'
 
 const ProjectsPage = () => {
   const { projects, loading, error } = useProjects()
@@ -27,9 +28,13 @@ const ProjectsPage = () => {
         </Typography>
 
         {loading && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-            <CircularProgress sx={{ color: 'var(--color-secondary)' }} />
-          </Box>
+          <Grid container spacing={4} aria-hidden="true">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
+                <SkeletonCard />
+              </Grid>
+            ))}
+          </Grid>
         )}
 
         {!loading && error && (
@@ -44,9 +49,11 @@ const ProjectsPage = () => {
 
         {!loading && !error && projects.length > 0 && (
           <Grid container spacing={4}>
-            {projects.map((project) => (
+            {projects.map((project, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={project.id}>
-                <ProjectCard project={project} />
+                <ScrollReveal delay={(index % 3) * 0.1} sx={{ height: '100%' }}>
+                  <ProjectCard project={project} />
+                </ScrollReveal>
               </Grid>
             ))}
           </Grid>

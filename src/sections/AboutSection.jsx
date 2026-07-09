@@ -16,6 +16,7 @@ import { usePortfolio } from '../context/PortfolioContext'
 import { skillCategories } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
 import { buttonHoverSx, cardHoverSx, skillChipHoverSx, imageZoomSx } from '../utils/hoverEffects'
+import ScrollReveal from '../components/ScrollReveal'
 
 const AboutSection = () => {
   const navigate = useNavigate()
@@ -39,6 +40,7 @@ const AboutSection = () => {
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {/* 메인 콘텐츠: 개발 스토리 등 요약 */}
           <Grid size={{ xs: 12, md: 8 }}>
+            <ScrollReveal direction="left">
             <Stack spacing={3}>
               {homeContent.map((item) => (
                 <Card
@@ -59,10 +61,12 @@ const AboutSection = () => {
                 </Card>
               ))}
             </Stack>
+            </ScrollReveal>
           </Grid>
 
           {/* 사이드: 프로필 사진 + 기본 정보 */}
           <Grid size={{ xs: 12, md: 4 }}>
+            <ScrollReveal direction="right" delay={0.15} sx={{ height: '100%' }}>
             <Card sx={{ height: '100%' }}>
               <CardContent sx={{ p: 3, textAlign: 'center' }}>
                 <Box
@@ -110,11 +114,13 @@ const AboutSection = () => {
                 </Stack>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </Grid>
         </Grid>
         </Fade>
 
         {/* 하단: 주요 스킬 */}
+        <ScrollReveal delay={0.1}>
         <Stack
           direction="row"
           spacing={1.5}
@@ -140,7 +146,9 @@ const AboutSection = () => {
             )
           })}
         </Stack>
+        </ScrollReveal>
 
+        <ScrollReveal delay={0.2}>
         <Box sx={{ textAlign: 'center' }}>
           <Button
             variant="contained"
@@ -153,6 +161,7 @@ const AboutSection = () => {
             더 알아보기
           </Button>
         </Box>
+        </ScrollReveal>
       </Container>
     </Box>
   )

@@ -5,17 +5,16 @@ import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
-import LinearProgress from '@mui/material/LinearProgress'
-import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Fade from '@mui/material/Fade'
-import Tooltip from '@mui/material/Tooltip'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate } from 'react-router-dom'
 import { usePortfolio } from '../context/PortfolioContext'
 import { skillCategories } from '../data/skillsData'
 import { getSkillIcon } from '../utils/skillIcons'
-import { buttonHoverSx, iconHoverSx } from '../utils/hoverEffects'
+import { buttonHoverSx } from '../utils/hoverEffects'
+import AnimatedSkillBar from '../components/AnimatedSkillBar'
+import ScrollReveal from '../components/ScrollReveal'
 
 const SkillTreeSection = () => {
   const navigate = useNavigate()
@@ -34,6 +33,7 @@ const SkillTreeSection = () => {
           기술 스택
         </Typography>
 
+        <ScrollReveal>
         <Card sx={{ mb: 4 }}>
           <CardContent sx={{ p: 4 }}>
             <Typography variant="body1" sx={{ color: 'var(--color-text-secondary)', lineHeight: 1.9, mb: 3 }}>
@@ -47,37 +47,7 @@ const SkillTreeSection = () => {
                   const color = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
                   return (
                     <Grid key={skill.id} size={{ xs: 12, sm: 6 }}>
-                      <Stack
-                        direction="row"
-                        sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 0.75 }}
-                      >
-                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                          <Tooltip title={`${skill.name} · ${skill.level}%`} arrow placement="top">
-                            <Icon sx={{ fontSize: 18, color, ...iconHoverSx(color) }} />
-                          </Tooltip>
-                          <Typography variant="body2" sx={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
-                            {skill.name}
-                          </Typography>
-                        </Stack>
-                        <Typography variant="body2" sx={{ color, fontWeight: 700 }}>
-                          {skill.level}%
-                        </Typography>
-                      </Stack>
-                      <LinearProgress
-                        variant="determinate"
-                        value={skill.level}
-                        aria-label={`${skill.name} 숙련도 ${skill.level}%`}
-                        sx={{
-                          height: 8,
-                          borderRadius: 4,
-                          backgroundColor: 'var(--color-border-dark)',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: color,
-                            borderRadius: 4,
-                            transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
-                          },
-                        }}
-                      />
+                      <AnimatedSkillBar icon={Icon} name={skill.name} level={skill.level} color={color} />
                     </Grid>
                   )
                 })}
@@ -85,7 +55,9 @@ const SkillTreeSection = () => {
             </Fade>
           </CardContent>
         </Card>
+        </ScrollReveal>
 
+        <ScrollReveal delay={0.15}>
         <Box sx={{ textAlign: 'center' }}>
           <Button
             variant="outlined"
@@ -105,6 +77,7 @@ const SkillTreeSection = () => {
             전체 스킬 보기
           </Button>
         </Box>
+        </ScrollReveal>
       </Container>
     </Box>
   )

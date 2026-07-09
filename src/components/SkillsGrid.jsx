@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -24,18 +24,17 @@ import { addableSkills, skillCategories, sortByLevelDesc } from '../data/skillsD
 import { getSkillIcon } from '../utils/skillIcons'
 import { usePortfolio } from '../context/PortfolioContext'
 import { cardHoverSx, iconHoverSx, skillChipHoverSx } from '../utils/hoverEffects'
+import { useInView } from '../hooks/useInView'
+import { useCountUp } from '../hooks/useCountUp'
+import CircularSkillProgress from './CircularSkillProgress'
 
 const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
-  const [displayLevel, setDisplayLevel] = useState(0)
+  const [cardRef, inView] = useInView({ threshold: 0.3 })
+  const displayLevel = useCountUp(skill.level, { start: inView, duration: 1000 })
   const [isEditing, setIsEditing] = useState(false)
   const [draftLevel, setDraftLevel] = useState(skill.level)
   const Icon = getSkillIcon(skill.name)
   const categoryColor = skillCategories[skill.category]?.color ?? 'var(--color-secondary)'
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDisplayLevel(skill.level), 100)
-    return () => clearTimeout(timer)
-  }, [skill.level])
 
   const startEdit = () => {
     setDraftLevel(skill.level)
@@ -50,6 +49,7 @@ const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
   return (
     <Tooltip title={skill.description} arrow placement="top" disableHoverListener={isEditing}>
       <Card
+        ref={cardRef}
         sx={{
           height: '100%',
           borderTop: `3px solid ${categoryColor}`,
@@ -95,8 +95,8 @@ const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
               </Stack>
             ) : (
               <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700 }}>
-                  {skill.level}%
+                <Typography variant="body2" sx={{ color: categoryColor, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                  {Math.round(displayLevel)}%
                 </Typography>
                 <IconButton
                   size="small"
@@ -129,7 +129,6 @@ const SkillCard = memo(function SkillCard({ skill, onUpdateLevel }) {
                 backgroundColor: 'var(--color-border-dark)',
                 '& .MuiLinearProgress-bar': {
                   backgroundColor: categoryColor,
-                  transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
                 },
               }}
             />
@@ -201,6 +200,7 @@ const SkillsGrid = () => {
         >
           <ToggleButton value="category" aria-label="카테고리별로 정렬">카테고리별</ToggleButton>
           <ToggleButton value="level" aria-label="숙련도순으로 정렬">숙련도순</ToggleButton>
+          <ToggleButton value="ring" aria-label="원형 그래프로 보기">원형 그래프</ToggleButton>
         </ToggleButtonGroup>
 
         <Button
@@ -217,7 +217,19 @@ const SkillsGrid = () => {
         </Button>
       </Stack>
 
-      {viewMode === 'level' ? (
+      {viewMode === 'ring' ? (
+        <Grid container spacing={3}>
+          {sortedByLevel.map((skill) => (
+            <Grid key={skill.id} size={{ xs: 6, sm: 4, md: 3 }}>
+              <CircularSkillProgress
+                level={skill.level}
+                color={skillCategories[skill.category]?.color}
+                label={skill.name}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : viewMode === 'level' ? (
         <Grid container spacing={2.5}>
           {sortedByLevel.map((skill) => (
             <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>

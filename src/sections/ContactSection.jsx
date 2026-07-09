@@ -12,6 +12,7 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 import SendIcon from '@mui/icons-material/Send'
 import { usePortfolio } from '../context/PortfolioContext'
 import { buttonHoverSx } from '../utils/hoverEffects'
+import ScrollReveal from '../components/ScrollReveal'
 
 const CONTACT_EMAIL = 'bersut5@gmail.com'
 
@@ -58,6 +59,7 @@ const ContactSection = () => {
           궁금한 점이나 협업 제안이 있으면 편하게 연락해주세요.
         </Typography>
 
+        <ScrollReveal direction="left">
         <Card sx={{ mb: 3 }}>
           <CardContent sx={{ p: 3 }}>
             <Stack spacing={2}>
@@ -88,7 +90,9 @@ const ContactSection = () => {
             </Stack>
           </CardContent>
         </Card>
+        </ScrollReveal>
 
+        <ScrollReveal direction="right" delay={0.15}>
         <Card>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="h6" sx={{ mb: 0.5, color: 'var(--color-text-primary)' }}>
@@ -141,6 +145,7 @@ const ContactSection = () => {
             </Stack>
           </CardContent>
         </Card>
+        </ScrollReveal>
       </Container>
     </Box>
   )

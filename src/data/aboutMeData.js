@@ -4,6 +4,7 @@ export const initialAboutMeData = {
     education: '동서대학교 일본어학과',
     major: '일본어',
     experience: '일본어 4년 (독학 기간 포함 9년) · 프로그래밍 경력 없음',
+    experienceYears: 9,
     languages: ['한국어 (모국어)', '日本語', 'English'],
     photo: '',
   },

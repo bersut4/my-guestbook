@@ -117,7 +117,19 @@ a:hover { color: var(--color-link-hover); }
   50%      { box-shadow: 0 0 0 10px rgba(45,212,191,0); }
 }
 
+@keyframes loading-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes skeleton-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-ocean-decor] { animation: none !important; }
   [data-hero-decor]  { animation: none !important; }
+  .loading-spinner-ring { animation: none !important; }
+  .skeleton-shimmer-block::after { animation: none !important; }
+  [data-scroll-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }

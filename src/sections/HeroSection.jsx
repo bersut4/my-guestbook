@@ -15,6 +15,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import { usePortfolio } from '../context/PortfolioContext'
 import { MOBILE_QUERY, TABLET_UP_QUERY, DESKTOP_UP_QUERY } from '../utils/breakpoints'
 import { buttonHoverSx, imageZoomSx } from '../utils/hoverEffects'
+import { useParallax } from '../hooks/useParallax'
 
 const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/bersut4/', icon: GitHubIcon, external: true },
@@ -35,6 +36,7 @@ const HeroSection = () => {
   const { homeData } = usePortfolio()
   const { basicInfo } = homeData
   const isMobile = useMediaQuery(MOBILE_QUERY)
+  const parallaxRef = useParallax(0.15)
 
   return (
     <Box
@@ -242,6 +244,10 @@ const HeroSection = () => {
 
           <Grid size={isMobile ? 12 : 5} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Box
+              ref={parallaxRef}
+              sx={{ transform: 'translate3d(0, var(--parallax-y, 0px), 0)', willChange: 'transform' }}
+            >
+            <Box
               data-hero-decor
               sx={{
                 position: 'relative',
@@ -306,6 +312,7 @@ const HeroSection = () => {
                   )}
                 </Box>
               </Box>
+            </Box>
             </Box>
           </Grid>
         </Grid>
