@@ -15,7 +15,7 @@ import { useMagnetic } from '../hooks/useMagnetic'
 const ProjectCard = ({ project }) => {
   const { title, description, tech_stack: techStack = [], detail_url: detailUrl, thumbnail_url: thumbnailUrl } = project
   const mobileThumbnailUrl = getMobileThumbnailUrl(thumbnailUrl)
-  const demoBtnRef = useMagnetic(0.35, 80)
+  const demoBtnRef = useMagnetic(0.15, 70)
 
   return (
     <Card

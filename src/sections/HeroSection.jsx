@@ -42,7 +42,7 @@ const scrollPastHero = () => {
 const TOUCH_TARGET = { minWidth: 44, minHeight: 44 }
 
 const MagneticSocialButton = ({ label, href, icon: Icon, external }) => {
-  const magneticRef = useMagnetic(0.4, 60)
+  const magneticRef = useMagnetic(0.18, 50)
   return (
     <Tooltip title={label}>
       <IconButton
@@ -73,8 +73,8 @@ const HeroSection = () => {
   const { basicInfo } = homeData
   const isMobile = useMediaQuery(MOBILE_QUERY)
   const parallaxRef = useParallax(0.15)
-  const projectsBtnRef = useMagnetic(0.3, 100)
-  const contactBtnRef = useMagnetic(0.3, 100)
+  const projectsBtnRef = useMagnetic(0.13, 80)
+  const contactBtnRef = useMagnetic(0.13, 80)
   const [rolesPaused, setRolesPaused] = useState(false)
   const typedRole = useTypewriter(ROLES, { paused: rolesPaused })
 
@@ -171,7 +171,6 @@ const HeroSection = () => {
 
             <Typography
               variant="h1"
-              className="hero-gradient-text"
               sx={{
                 fontWeight: 800,
                 lineHeight: 1.3,
@@ -181,15 +180,9 @@ const HeroSection = () => {
                 [`@media ${TABLET_UP_QUERY}`]: { fontSize: '2.25rem', lineHeight: 1.3 },
                 '@media (min-width:900px)': { fontSize: '2.75rem', lineHeight: 1.28 },
                 [`@media ${DESKTOP_UP_QUERY}`]: { fontSize: '3.5rem', lineHeight: 1.22 },
-                background:
-                  'linear-gradient(90deg, var(--color-text-primary) 20%, var(--color-secondary) 70%, var(--color-accent) 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                color: 'transparent',
-                WebkitTextFillColor: 'transparent',
               }}
             >
-              <SplitText text="몰입한 시간만큼 실력이 되는 사람입니다" startDelay={0.15} />
+              <SplitText text="몰입한 시간만큼 실력이 되는 사람입니다" startDelay={0.15} gradient />
             </Typography>
 
             <Box

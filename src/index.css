@@ -190,14 +190,18 @@ a:hover { color: var(--color-link-hover); }
   animation: split-char-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@keyframes hero-gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+/* 글자별로 색이 순환하며 흘러가는(움직이는 그라데이션처럼 보이는) 효과.
+   background-clip:text는 중첩된 span 구조에서 텍스트 모양대로 클립되지 않아
+   대신 색상 자체를 순환시키는 방식으로 구현한다. */
+@keyframes split-char-gradient-color {
+  0%, 100% { color: var(--color-text-primary); }
+  33%      { color: var(--color-secondary); }
+  66%      { color: var(--color-accent); }
 }
 
-.hero-gradient-text {
-  background-size: 200% auto;
-  animation: hero-gradient-shift 5s ease-in-out infinite;
+.split-char.split-char--gradient {
+  animation: split-char-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both,
+    split-char-gradient-color 3s ease-in-out infinite;
 }
 
 @keyframes typewriter-blink {
@@ -217,7 +221,6 @@ a:hover { color: var(--color-link-hover); }
   .loading-spinner-ring { animation: none !important; }
   .skeleton-shimmer-block::after { animation: none !important; }
   [data-scroll-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
-  .split-char { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .hero-gradient-text { animation: none !important; }
+  .split-char { animation: none !important; opacity: 1 !important; transform: none !important; color: var(--color-text-primary) !important; }
   .typewriter-cursor { animation: none !important; }
 }

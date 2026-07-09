@@ -19,7 +19,7 @@ const CONTACT_EMAIL = 'bersut5@gmail.com'
 
 const ContactSection = () => {
   const { notify } = usePortfolio()
-  const sendBtnRef = useMagnetic(0.3, 90)
+  const sendBtnRef = useMagnetic(0.13, 70)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState({})
 
