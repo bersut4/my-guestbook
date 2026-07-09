@@ -84,11 +84,15 @@ a:hover { color: var(--color-link-hover); }
   will-change: transform, opacity;
 }
 
-/* 복어 커서 — 스프라이트 한 장(왼쪽: 평상시, 오른쪽: 클릭 가능)을 background-position으로 전환 */
+/* 복어 커서 — 스프라이트 한 장(왼쪽: 평상시, 오른쪽: 클릭 가능)을 background-position으로 전환.
+   박스를 지느러미 위치에 맞춰 배치했다: 평상시 복어 그림 위쪽의 튀어나온 지느러미가
+   사람 눈에는 "여기가 커서"처럼 보이는데, 실제 클릭 좌표(마우스 위치)는 박스 정중앙이라
+   지느러미 끝과 실제 클릭 지점이 어긋나 보였다. 그래서 박스 중앙(-28px) 대신
+   지느러미 끝 근처로 오프셋을 옮겨 시각적 위치와 실제 클릭 위치를 맞춘다. */
 .cursor-fish {
   position: fixed;
-  top: -28px;
-  left: -28px;
+  top: -14px;
+  left: -15px;
   width: 56px;
   height: 56px;
   background-image: url('/cursors/pufferfish.png');
